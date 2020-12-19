@@ -42,7 +42,7 @@ class transmission::config {
     ensure  => 'directory',
     owner   => $::transmission::owner,
     group   => $::transmission::group,
-    mode    => '0770',
+    mode    => '0755',
     require => Package['transmission-daemon'],
   }
 
@@ -51,7 +51,7 @@ class transmission::config {
       ensure  => 'directory',
       owner   => $::transmission::owner,
       group   => $::transmission::group,
-      mode    => '0770',
+      mode    => '0755',
       require => Package['transmission-daemon'],
     }
   }
@@ -60,7 +60,7 @@ class transmission::config {
     ensure  => 'directory',
     owner   => $::transmission::owner,
     group   => $::transmission::group,
-    mode    => '0770',
+    mode    => '0775',
     require => File[$::transmission::params::download_root]
   }
 
