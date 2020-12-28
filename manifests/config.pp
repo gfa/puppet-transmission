@@ -27,15 +27,6 @@ class transmission::config {
     require => Package['transmission-daemon'],
   }
 
-  file { '/etc/transmission-daemon/settings.json.puppet':
-    ensure  => 'file',
-    owner   => $::transmission::owner,
-    group   => $::transmission::group,
-    mode    => '0600',
-    content => template('transmission/settings.json.erb'),
-    require => File['/etc/transmission-daemon'],
-  }
-
   # == Transmission Home
 
   file { $::transmission::params::home_dir:
@@ -56,12 +47,32 @@ class transmission::config {
     }
   }
 
-  file { $::transmission::params::download_dirs:
-    ensure  => 'directory',
+  if $::transmission::download_dir =~ /^\// {
+    file { $::transmission::download_dir:
+      ensure  => 'directory',
+      owner   => $::transmission::owner,
+      group   => $::transmission::group,
+      mode    => '0775',
+    }
+    $download_dir_composed = $::transmission::download_dir
+  } else {
+    file { $::transmission::params::download_dirs:
+      ensure  => 'directory',
+      owner   => $::transmission::owner,
+      group   => $::transmission::group,
+      mode    => '0775',
+      require => File[$::transmission::params::download_root]
+    }
+    $download_dir_composed = "${::transmission::params::download_root}/${::transmission::download_dir}"
+  }
+
+  file { '/etc/transmission-daemon/settings.json.puppet':
+    ensure  => 'file',
     owner   => $::transmission::owner,
     group   => $::transmission::group,
-    mode    => '0775',
-    require => File[$::transmission::params::download_root]
+    mode    => '0600',
+    content => template('transmission/settings.json.erb'),
+    require => File['/etc/transmission-daemon'],
   }
 
   file { "${::transmission::params::home_dir}/settings.json":

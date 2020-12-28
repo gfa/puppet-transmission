@@ -12,7 +12,7 @@
     "blocklist-url": "<%= scope['::transmission::blocklist_url'] %>",
     "cache-size-mb": <%= scope['::transmission::cache_size_mb'] %>,
     "dht-enabled": <%= scope['::transmission::dht_enabled'] %>,
-    "download-dir": "<%= scope['::transmission::params::download_root'] %>/<%= scope['::transmission::download_dir'] %>",
+    "download-dir": "<%= @download_dir_composed %>",
     "download-queue-enabled": <%= scope['::transmission::download_queue_enabled'] %>,
     "download-queue-size": <%= scope['::transmission::download_queue_size'] %>,
     "encryption": <%= scope['::transmission::encryption'] %>,
